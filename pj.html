@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik's Cube Timer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background: black;
+            color: #00FF00;
+            text-align: center;
+            position: relative;
+            border: 5px solid #00FF00;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 10px;
+            overflow: hidden;
+        }
+        #timer {
+            font-size: 10vw;
+            font-weight: bold;
+            padding: 20px;
+            background: transparent;
+            border-radius: 10px;
+            box-shadow: none;
+            margin: 20px;
+            transition: color 0.2s ease-in-out;
+            color: #00FF00;
+        }
+    </style>
+</head>
+<body>
+    <div id="timer">0.00</div>
+    <script>
+        let timer = document.getElementById("timer");
+        let startTime, interval, running = false;
+        let holdStart;
+        
+        document.addEventListener("keydown", (event) => {
+            if (event.code === "Space" && !holdStart) {
+                timer.style.color = "red"; 
+                holdStart = setTimeout(() => {
+                    timer.style.color = "red";
+                }, 1500);
+            }
+        });
+
+        document.addEventListener("keyup", (event) => {
+            if (event.code === "Space") {
+                if (holdStart) {
+                    clearTimeout(holdStart);
+                    holdStart = null;
+                    timer.style.color = "#00FF00";
+                    if (!running) {
+                        startTimer();
+                    } else {
+                        stopTimer();
+                    }
+                }
+            }
+        });
+
+        function startTimer() {
+            running = true;
+            startTime = Date.now();
+            interval = setInterval(updateTimer, 10);
+        }
+
+        function stopTimer() {
+            running = false;
+            clearInterval(interval);
+        }
+
+        function updateTimer() {
+            let elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
+            timer.textContent = elapsedTime;
+        }
+    </script>
+</body>
+</html>
